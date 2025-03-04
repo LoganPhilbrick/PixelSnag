@@ -69,11 +69,13 @@ export default function Signup() {
   return (
     <>
       <div className="relative z-40 flex justify-center items-center w-full h-screen">
-        <div className="w-1/3 h-4/5 ">
+        <div className="container mx-auto max-w-xl h-4/5 px-4 md:px-0">
           <div className="w-full h-full flex flex-col items-center justify-center px-4 bg-zinc-700 rounded-xl shadow-2xl shadow-black/50">
             <form className="w-full max-w-md" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-4">
-                <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start">Sign Up</h1>
+                <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start">
+                  Sign Up
+                </h1>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="email" className="text-neutral-300">
                     Email
@@ -98,7 +100,11 @@ export default function Signup() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <button type="submit" className="bg-blue-500 text-white p-2 rounded-md" disabled={isLoading}>
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white p-2 rounded-md"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Signing you up..." : "Sign up"}
                 </button>
               </div>

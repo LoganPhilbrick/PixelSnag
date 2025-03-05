@@ -1,18 +1,21 @@
 import "./App.css";
-import Background from "./components/Background";
-import Hero from "./components/Hero";
+import Home from "./pages/Home";
+import Signup from "./pages/Signup";
+import { SupabaseProvider } from "./contexts/SupabaseContext";
 
 function App() {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_API;
+  const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <>
-      <div className="relative z-40">
-        <Hero />
-      </div>
-      <div className="flex flex-col items-center w-full">
-        <h2 className="text-4xl my-24">Don't waste your time with boring screenshots.</h2>
-      </div>
-      <Background />
-    </>
+    <SupabaseProvider supabaseUrl={supabaseUrl} supabaseKey={supabaseKey}>
+      {/* <Home /> */}
+      <Signup />
+    </SupabaseProvider>
   );
 }
 

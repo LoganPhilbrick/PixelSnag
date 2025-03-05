@@ -1,3 +1,4 @@
+"use client";
 import Background from "../components/Background";
 import { z } from "zod";
 import { useState, use } from "react";
@@ -73,9 +74,7 @@ export default function Signup() {
           <div className="w-full h-full flex flex-col items-center justify-center px-4 bg-zinc-700 rounded-xl shadow-2xl shadow-black/50">
             <form className="w-full max-w-md" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-4">
-                <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start">
-                  Sign Up
-                </h1>
+                <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start">Sign Up</h1>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="email" className="text-neutral-300">
                     Email
@@ -100,11 +99,7 @@ export default function Signup() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white p-2 rounded-md"
-                  disabled={isLoading}
-                >
+                <button type="submit" className="bg-blue-500 text-white p-2 rounded-md" disabled={isLoading}>
                   {isLoading ? "Signing you up..." : "Sign up"}
                 </button>
               </div>

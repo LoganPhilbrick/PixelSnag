@@ -2,7 +2,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import { SupabaseProvider } from "./contexts/SupabaseContext";
-
+import Subscribe from "./pages/Subscribe";
 function App() {
   const supabaseUrl = import.meta.env.VITE_SUPABASE_API;
   const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
@@ -14,7 +14,8 @@ function App() {
   return (
     <SupabaseProvider supabaseUrl={supabaseUrl} supabaseKey={supabaseKey}>
       {/* <Home /> */}
-      <Signup />
+      {/* <Signup /> */}
+      <Subscribe />
     </SupabaseProvider>
   );
 }

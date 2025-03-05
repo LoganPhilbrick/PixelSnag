@@ -2,18 +2,14 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement } from "@stripe/react-stripe-js";
 import { useState, useEffect } from "react";
 
-const stripePromise = loadStripe(
-  "pk_live_51P8EBrRu8vr2oRZoPkCl24uVJXT1Vw2gVuZRTIlTgndww2J7lCevE5EwBRN9X1F66eCNJzLUrhuJ80DIftEzxD5s00otGUvvLE"
-);
+const stripePromise = loadStripe("pk_live_51P8EBrRu8vr2oRZoPkCl24uVJXT1Vw2gVuZRTIlTgndww2J7lCevE5EwBRN9X1F66eCNJzLUrhuJ80DIftEzxD5s00otGUvvLE");
 
 const CheckoutForm = () => {
   return (
     <form className="flex flex-col gap-8">
       <h1 className="text-2xl font-bold ">Checkout</h1>
       <PaymentElement options={{}} />
-      <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-        Submit
-      </button>
+      <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
     </form>
   );
 };

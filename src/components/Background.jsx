@@ -1,4 +1,4 @@
-import mesh from "../assets/mesh.png";
+import mesh from "../../assets/mesh.png";
 
 export default function Background() {
   return (

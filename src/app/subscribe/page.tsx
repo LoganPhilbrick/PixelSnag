@@ -1,7 +1,7 @@
 import React from "react";
 import Subscribe from "../../screens/Subscribe";
-function pages() {
+function page() {
   return <Subscribe />;
 }
 
-export default pages;
+export default page;

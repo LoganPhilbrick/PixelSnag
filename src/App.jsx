@@ -1,6 +1,6 @@
 import "./App.css";
-import Home from "./pages/Home";
-import Signup from "./pages/Signup";
+import Home from "./screens/Home";
+import Signup from "./screens/Signup";
 import { SupabaseProvider } from "./contexts/SupabaseContext";
 // import Subscribe from "./pages/Subscribe";
 

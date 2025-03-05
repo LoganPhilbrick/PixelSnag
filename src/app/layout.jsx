@@ -1,21 +1,24 @@
-import { Poppins } from "next/font/google";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
+import { SupabaseProvider } from "../contexts/SupabaseContext";
+import "../index.css";
 
 export const metadata = {
   title: "Screenshot Website",
 };
 
 export default function RootLayout({ children }) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_API;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <html lang="en">
-      <body className={poppins.className}>
-        <div id="root">{children}</div>
+      <body>
+        <SupabaseProvider supabaseUrl={supabaseUrl} supabaseKey={supabaseKey}>
+          <div id="root">{children}</div>
+        </SupabaseProvider>
       </body>
     </html>
   );

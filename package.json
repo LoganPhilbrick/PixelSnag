@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -13,16 +14,20 @@
     "@stripe/react-stripe-js": "^3.3.0",
     "@stripe/stripe-js": "^5.8.0",
     "@supabase/supabase-js": "^2.49.1",
+    "@tailwindcss/postcss": "^4.0.11",
     "@tailwindcss/vite": "^4.0.9",
+    "formik": "^2.4.6",
+    "next": "^15.2.1",
+    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwindcss": "^4.0.9",
-    "zod": "^3.24.2"
+    "stripe": "^17.7.0",
+    "tailwindcss": "^4.0.11",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
+    "@next/eslint-plugin-next": "^15.2.1",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",

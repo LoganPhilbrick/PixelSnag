@@ -1,5 +1,5 @@
 import { SupabaseProvider } from "../contexts/SupabaseContext";
-import "../index.css";
+import "./globals.css";
 
 export const metadata = {
   title: "Screenshot Website",

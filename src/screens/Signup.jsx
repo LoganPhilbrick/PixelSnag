@@ -6,12 +6,8 @@ import { SupabaseContext } from "../contexts/SupabaseContext";
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 const signupSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
+  email: Yup.string().email("Invalid email address").required("Email is required"),
+  password: Yup.string().min(8, "Password must be at least 8 characters").required("Password is required"),
 });
 
 export default function Signup() {
@@ -46,25 +42,16 @@ export default function Signup() {
                 });
                 setIsLoading(false);
                 if (error) {
-                  setErrors(error.message);
+                  console.log(error.message);
                   return;
                 }
                 router.push("/");
               }}
             >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-              }) => (
+              {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                 <form className="w-full max-w-md" onSubmit={handleSubmit}>
                   <div className="flex flex-col gap-4">
-                    <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start">
-                      Sign Up
-                    </h1>
+                    <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start">Sign Up</h1>
                     <div className="flex flex-col gap-2">
                       <label htmlFor="firstName" className="text-neutral-300">
                         First Name
@@ -77,9 +64,7 @@ export default function Signup() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
-                      {errors.firstName && touched.firstName && (
-                        <p className="text-red-500">{errors.firstName}</p>
-                      )}
+                      {errors.firstName && touched.firstName && <p className="text-red-500">{errors.firstName}</p>}
                     </div>
                     <div className="flex flex-col gap-2">
                       <label htmlFor="lastName" className="text-neutral-300">
@@ -93,9 +78,7 @@ export default function Signup() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
-                      {errors.lastName && touched.lastName && (
-                        <p className="text-red-500">{errors.lastName}</p>
-                      )}
+                      {errors.lastName && touched.lastName && <p className="text-red-500">{errors.lastName}</p>}
                     </div>
                     <div className="flex flex-col gap-2">
                       <label htmlFor="email" className="text-neutral-300">
@@ -109,9 +92,7 @@ export default function Signup() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
-                      {errors.email && touched.email && (
-                        <p className="text-red-500">{errors.email}</p>
-                      )}
+                      {errors.email && touched.email && <p className="text-red-500">{errors.email}</p>}
                     </div>
                     <div className="flex flex-col gap-2">
                       <label htmlFor="password" className="text-neutral-300">
@@ -125,15 +106,9 @@ export default function Signup() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
-                      {errors.password && touched.password && (
-                        <p className="text-red-500">{errors.password}</p>
-                      )}
+                      {errors.password && touched.password && <p className="text-red-500">{errors.password}</p>}
                     </div>
-                    <button
-                      type="submit"
-                      className="bg-blue-500 text-white p-2 rounded-md"
-                      disabled={isLoading}
-                    >
+                    <button type="submit" className="bg-blue-500 text-white p-2 rounded-md" disabled={isLoading}>
                       {isLoading ? "Signing you up..." : "Sign up"}
                     </button>
                   </div>

@@ -6,7 +6,9 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  // eslint-disable-next-line no-undef
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_API;
+  // eslint-disable-next-line no-undef
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 
   if (!supabaseUrl || !supabaseKey) {

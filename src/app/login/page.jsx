@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Background from "../../components/Background";
+
 import * as Yup from "yup";
 import { useState, useContext } from "react";
 import { SupabaseContext } from "../../contexts/SupabaseContext";
@@ -22,7 +22,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="relative z-40 flex justify-center items-center w-full h-screen">
+      <div className="relative z-40 flex justify-center items-center w-full h-screen bg-[url(/mesh.png)] bg-center bg-no-repeat bg-[length:100%_100%]">
         <div className="container mx-auto max-w-xl h-4/5 px-4 md:px-0">
           <div className="w-full h-full flex flex-col items-center justify-center px-4 bg-zinc-700 rounded-xl shadow-2xl shadow-black/50">
             <Formik
@@ -94,8 +94,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-
-      <Background />
     </>
   );
 }

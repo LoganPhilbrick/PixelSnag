@@ -9,7 +9,6 @@ export default function RootLayout({ children }) {
 
   RootLayout.metadata = {
     title: "PixelSnag",
-    favicon: "/favicon.ico",
   };
 
   if (!supabaseUrl || !supabaseKey) {
@@ -18,6 +17,9 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body>
         <SupabaseProvider supabaseUrl={supabaseUrl} supabaseKey={supabaseKey}>
           <div id="root">{children}</div>

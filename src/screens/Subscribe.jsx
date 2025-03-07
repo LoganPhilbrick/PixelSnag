@@ -11,21 +11,27 @@ import { PulseLoader } from "react-spinners";
 import clsx from "clsx";
 
 const stripePromise = loadStripe(
-  "pk_live_51P8EBrRu8vr2oRZoPkCl24uVJXT1Vw2gVuZRTIlTgndww2J7lCevE5EwBRN9X1F66eCNJzLUrhuJ80DIftEzxD5s00otGUvvLE"
+  // eslint-disable-next-line no-undef
+  process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === "true"
+    ? // eslint-disable-next-line no-undef
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY
+    : // eslint-disable-next-line no-undef
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_LIVE_KEY
 );
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!stripe || !elements) {
       return;
     }
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:3000/subscribe",
+        return_url: "http://localhost:3000/",
       },
     });
     if (error) {

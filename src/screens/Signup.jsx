@@ -17,6 +17,7 @@ export default function Signup() {
   return (
     <>
       <div className="relative z-40 flex justify-center items-center w-full h-screen bg-[url(/mesh.png)] bg-center bg-no-repeat bg-[length:100%_100%]">
+        <div className="absolute top-0 left-0 -z-50 w-full h-full bg-gradient-to-t from-[#050505] to-transparent" />
         <div className="container mx-auto max-w-xl h-4/5 px-4 md:px-0">
           <div className="w-full h-full flex flex-col items-center justify-center px-4 bg-zinc-700 rounded-xl shadow-2xl shadow-black/50">
             <Formik

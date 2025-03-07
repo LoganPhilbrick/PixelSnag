@@ -2,14 +2,21 @@ import Stripe from "stripe";
 import { NextResponse } from "next/server";
 
 // Initialize Stripe with your secret key
-// eslint-disable-next-line no-undef
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
+const stripe = new Stripe(
+  // eslint-disable-next-line no-undef
+  process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === "true"
+    ? // eslint-disable-next-line no-undef
+      process.env.NEXT_PUBLIC_STRIPE_TEST_SECRET_KEY
+    : // eslint-disable-next-line no-undef
+      process.env.NEXT_PUBLIC_STRIPE_LIVE_SECRET_KEY
+);
 
 // CORS headers
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+  "Access-Control-Allow-Headers":
+    "Origin, X-Requested-With, Content-Type, Accept",
 };
 
 // OPTIONS handler for CORS preflight requests
@@ -53,6 +60,9 @@ export async function POST(request) {
     );
   } catch (error) {
     console.error("Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500, headers: corsHeaders }
+    );
   }
 }

@@ -9,6 +9,7 @@ export default function RootLayout({ children }) {
 
   RootLayout.metadata = {
     title: "PixelSnag",
+    favicon: "/favicon.ico",
   };
 
   if (!supabaseUrl || !supabaseKey) {

@@ -40,26 +40,24 @@ export default function Features() {
     },
   ];
 
-  useEffect(() => {
-    console.log(active);
-  }, [active]);
+  // useEffect(() => {
+  //   console.log(active);
+  // }, [active]);
   return (
     <>
-      <div className="flex flex-col items-center my-24">
-        <h2 className="text-5xl font-semibold bg-gradient-to-b from-white to-zinc-400 text-transparent bg-clip-text p-1.5">Say goodbye to boring screenshots</h2>
-        <h3 className="text-2xl  bg-gradient-to-b from-white to-zinc-400 text-transparent bg-clip-text  mt-6">Explore the comprehensive features of PixelSnag</h3>
+      <div className="flex flex-col items-center mt-12 sm:mt-24">
+        <h2 className="text-xl md:text-3xl lg:text-5xl px-6 font-semibold bg-gradient-to-b from-white to-zinc-400 text-transparent bg-clip-text p-1.5">Say goodbye to boring screenshots</h2>
+        <h3 className="text-md md:text-xl lg:text-2xl bg-gradient-to-b from-white to-zinc-400 text-transparent bg-clip-text px-6 mt-6">Explore the comprehensive features of PixelSnag</h3>
 
-        <div className="relative flex flex-wrap justify-center w-2/3 mt-24">
+        <div className="grid grid-rows-2 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 px-8 pb-8 justify-center w-full sm:w-2/3 mt-12 sm:mt-24">
           {cardInfo.map((card, index) => (
-            <>
-              <div key={card.id} className="h-72 w-96 m-4 bg-[#0e0e0e] rounded-xl">
-                <div className="p-6">
-                  <img src={card.icon} alt="icon" className="w-16 pb-2" />
-                  <h4 className="text-xl font-semibold py-4">{card.title}</h4>
-                  <p className="w-80">{card.text}</p>
-                </div>
+            <div key={index} className="col-span-1 bg-[#0e0e0e] rounded-xl">
+              <div className="p-6">
+                <img src={card.icon} alt="icon" className="w-16 pb-2" />
+                <h4 className="lg:text-xl font-semibold py-4">{card.title}</h4>
+                <p className="text-sm lg:text-base">{card.text}</p>
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>

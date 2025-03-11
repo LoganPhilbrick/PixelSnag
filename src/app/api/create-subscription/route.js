@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 
 export async function POST() {
   const supabase = await createClient();
+  // get the user from the supabase client
+  // we should have a user at this point in the flow
   const user = await supabase.auth.getUser();
 
   const stripe = new Stripe(
@@ -14,7 +16,10 @@ export async function POST() {
       : // eslint-disable-next-line no-undef
         process.env.NEXT_PUBLIC_STRIPE_LIVE_SECRET_KEY
   );
-
+  // create the subscription
+  // this also creates the client secret
+  // The price is an item that is created in the stripe dashboard
+  // https://dashboard.stripe.com/products?active=true
   const subscription = await stripe.subscriptions.create({
     customer: user.data.user.user_metadata.stripe_customer_id,
     items: [
@@ -31,8 +36,7 @@ export async function POST() {
     expand: ["latest_invoice.payment_intent"],
   });
 
-  console.log(subscription);
-
+  // return the subscription id and the client secret
   return NextResponse.json({
     subscriptionId: subscription.id,
     clientSecret: subscription.latest_invoice.payment_intent.client_secret,

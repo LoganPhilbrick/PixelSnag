@@ -33,13 +33,17 @@ function Page() {
             validationSchema={signupSchema}
             onSubmit={async (values) => {
               setIsLoading(true);
-              const { error } = await signup(values);
-              setIsLoading(false);
-              if (error) {
+              try {
+                const { error } = await signup(values);
+                if (error) {
+                  throw new Error(JSON.stringify(error));
+                }
+                router.push("/subscribe");
+              } catch (error) {
                 console.log(error.message);
-                return;
+              } finally {
+                setIsLoading(false);
               }
-              router.push("/subscribe");
             }}
           >
             {({

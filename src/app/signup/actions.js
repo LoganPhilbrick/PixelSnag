@@ -6,7 +6,6 @@ import { createClient } from "../../utils/supabase/server";
 import Stripe from "stripe";
 
 export async function signup(values) {
-  // Updated validation to work with values object
   const email = values.email?.trim();
   const password = values.password?.trim();
   const firstName = values.firstName?.trim();
@@ -44,7 +43,10 @@ export async function signup(values) {
         : // eslint-disable-next-line no-undef
           process.env.NEXT_PUBLIC_STRIPE_LIVE_SECRET_KEY
     );
-
+    // check if the stripe customer already exists
+    // if it does, use it
+    // if it doesn't, create a new one
+    // we need to pass the customer id to the supabase auth.signup
     const existingCustomer = await stripe.customers.list({
       email,
     });

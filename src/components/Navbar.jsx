@@ -8,10 +8,7 @@ export default function Navbar() {
         <Link href="/login" className="bg-black py-4 px-8 mr-4 rounded-full">
           Login
         </Link>
-        <Link
-          href="/signup"
-          className="bg-white text-black py-4 px-8 rounded-full"
-        >
+        <Link href="/signup" className="bg-white text-black py-4 px-8 rounded-full">
           Signup
         </Link>
       </div>

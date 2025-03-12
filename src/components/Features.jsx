@@ -1,11 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React from "react";
 
 export default function Features() {
-  const [active, setActive] = useState(null);
-
   const cardInfo = [
     {
       title: "Intuitive screenshots",
@@ -40,9 +37,6 @@ export default function Features() {
     },
   ];
 
-  // useEffect(() => {
-  //   console.log(active);
-  // }, [active]);
   return (
     <>
       <div className="flex flex-col items-center mt-12 sm:mt-24">

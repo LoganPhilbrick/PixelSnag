@@ -11,7 +11,6 @@ const stripe = new Stripe(
 
 export async function GET(request) {
   const url = new URL(request.url, `http://${request.headers.get("host")}`); // Ensure absolute URL
-  console.log(url.searchParams);
   const stripeCustomerId = url.searchParams.get("stripeCustomerId");
 
   if (!stripeCustomerId) {
@@ -21,8 +20,6 @@ export async function GET(request) {
     });
   }
 
-  console.log(stripeCustomerId);
-
   try {
     const subscriptions = await stripe.subscriptions.list({
       customer: stripeCustomerId,
@@ -30,7 +27,10 @@ export async function GET(request) {
     });
 
     return new Response(
-      JSON.stringify({ isSubscribed: subscriptions.data.length > 0 }),
+      JSON.stringify({
+        ...subscriptions,
+        isSubscribed: subscriptions.data.length > 0,
+      }),
       {
         status: 200,
         headers: { "Content-Type": "application/json" },

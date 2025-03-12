@@ -54,7 +54,6 @@ export async function signup(values) {
     let customer;
 
     if (existingCustomer.data.length > 0) {
-      console.log("Customer already exists");
       customer = existingCustomer.data[0];
     } else {
       customer = await stripe.customers.create({
@@ -79,7 +78,6 @@ export async function signup(values) {
       return { error: authError.message };
     }
 
-    console.log("Customer created");
     return { success: true };
   } catch (error) {
     return { error: error.message };

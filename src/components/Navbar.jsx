@@ -27,7 +27,7 @@ export default async function Navbar() {
         )}
         {data.user && (
           <Link
-            href="/subscribe"
+            href="/dashboard"
             className="bg-black py-4 px-8 mr-4 rounded-full"
           >
             Dashboard

@@ -28,5 +28,5 @@ export async function login(formData) {
   }
 
   revalidatePath("/");
-  redirect("/");
+  redirect("/dashboard");
 }

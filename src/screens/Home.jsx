@@ -1,5 +1,6 @@
 import Hero from "../components/Hero";
 import ContactForm from "../components/ContactForm";
+import Features from "../components/Features";
 
 export default function Home() {
   return (
@@ -7,6 +8,7 @@ export default function Home() {
       <div className="relative z-40">
         <Hero />
         <ContactForm />
+        <Features />
       </div>
     </>
   );

@@ -43,7 +43,7 @@ export default function Features() {
         <h2 className="text-xl md:text-3xl lg:text-5xl px-6 font-semibold bg-gradient-to-b from-white to-zinc-400 text-transparent bg-clip-text p-1.5">Say goodbye to boring screenshots</h2>
         <h3 className="text-md md:text-xl lg:text-2xl bg-gradient-to-b from-white to-zinc-400 text-transparent bg-clip-text px-6 mt-6">Explore the comprehensive features of PixelSnag</h3>
 
-        <div className="grid grid-rows-2 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 px-8 pb-8 justify-center w-full sm:w-2/3 mt-12 sm:mt-24">
+        <div className="grid grid-rows-2 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 px-8 justify-center w-full sm:w-2/3 mt-12 sm:mt-24">
           {cardInfo.map((card, index) => (
             <div key={index} className="col-span-1 bg-[#0e0e0e] rounded-xl">
               <div className="p-6">

@@ -7,8 +7,8 @@ export default function Home() {
     <>
       <div className="relative z-40">
         <Hero />
-        <ContactForm />
         <Features />
+        <ContactForm />
       </div>
     </>
   );

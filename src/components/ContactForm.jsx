@@ -36,6 +36,7 @@ function ContactForm() {
         setTimeout(load, 100);
       };
       script.onerror = (error) => {
+        console.log(error);
         load();
       };
       document.body.appendChild(script);

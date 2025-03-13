@@ -87,15 +87,19 @@ function Page() {
                     <h2 className="text-2xl font-bold text-neutral-300 ">
                       Address
                     </h2>
-                    <Link href="/address" className="underline">
+                    <Link
+                      href="/address"
+                      query={{ redirectTo: "/dashboard" }}
+                      className="underline"
+                    >
                       {user.user.user_metadata.address ? "Edit" : "Add"}
                     </Link>
                   </div>
-                  <p className="text-neutral-300 mb-4 md:mb-0">
+                  <div className="text-neutral-300 mb-4 md:mb-0">
                     {user.user.user_metadata.address
                       ? formatAddress(user.user.user_metadata.address)
                       : "No address set"}
-                  </p>
+                  </div>
                 </div>
                 {subscription.data && subscription.data.length > 0 && (
                   <div>

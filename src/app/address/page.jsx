@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { createClient } from "../../utils/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, AddressElement } from "@stripe/react-stripe-js";
 
@@ -34,6 +34,8 @@ function Page() {
   const [setupIntent, setSetupIntent] = useState(null);
   const [address, setAddress] = useState(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
 
   useEffect(() => {
     const supabase = createClient();
@@ -62,7 +64,7 @@ function Page() {
     const res = await updateCustomerAddress(address);
 
     if (res.status === 200) {
-      router.push("/subscribe");
+      router.push(redirectTo ?? "/dashboard");
     }
   };
 

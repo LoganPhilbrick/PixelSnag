@@ -37,11 +37,7 @@ export async function signup(values) {
 
     const stripe = new Stripe(
       // eslint-disable-next-line no-undef
-      process.env.NEXT_PUBLIC_STRIPE_TEST_MODE
-        ? // eslint-disable-next-line no-undef
-          process.env.NEXT_PUBLIC_STRIPE_TEST_SECRET_KEY
-        : // eslint-disable-next-line no-undef
-          process.env.NEXT_PUBLIC_STRIPE_LIVE_SECRET_KEY
+      process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY
     );
     // check if the stripe customer already exists
     // if it does, use it

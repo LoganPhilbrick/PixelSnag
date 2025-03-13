@@ -10,12 +10,20 @@ export async function POST() {
 
   const stripe = new Stripe(
     // eslint-disable-next-line no-undef
-    process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === "true"
-      ? // eslint-disable-next-line no-undef
-        process.env.NEXT_PUBLIC_STRIPE_TEST_SECRET_KEY
-      : // eslint-disable-next-line no-undef
-        process.env.NEXT_PUBLIC_STRIPE_LIVE_SECRET_KEY
+    process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY
   );
+
+  const { error } = await stripe.customers.update(
+    user.data.user.user_metadata.stripe_customer_id,
+    {
+      address: user.data.user.user_metadata.address,
+    }
+  );
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
   // create the subscription
   // this also creates the client secret
   // The price is an item that is created in the stripe dashboard
@@ -26,7 +34,7 @@ export async function POST() {
       {
         price:
           // eslint-disable-next-line no-undef
-          process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === "true"
+          process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === true
             ? "price_1R1HW0Ru8vr2oRZohHhIDQ95"
             : "price_1R1HX9Ru8vr2oRZocEBf9mN6",
       },
@@ -34,11 +42,13 @@ export async function POST() {
     payment_behavior: "default_incomplete",
     payment_settings: { save_default_payment_method: "on_subscription" },
     expand: ["latest_invoice.payment_intent"],
+    automatic_tax: { enabled: true },
   });
 
   // return the subscription id and the client secret
   return NextResponse.json({
     subscriptionId: subscription.id,
     clientSecret: subscription.latest_invoice.payment_intent.client_secret,
+    subscription: subscription,
   });
 }

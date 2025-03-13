@@ -35,6 +35,20 @@ function Page() {
     return new Date(date * 1000).toLocaleDateString("en-US", options);
   };
 
+  const formatAddress = (address) => {
+    const { line1, line2, city, state, postal_code, country } = address;
+    return (
+      <>
+        <p>{line1}</p>
+        {line2 && <p>{line2}</p>}
+        <p>
+          {city}, {state} {postal_code}
+        </p>
+        <p>{country}</p>
+      </>
+    );
+  };
+
   return (
     <div className="w-full h-screen bg-neutral-900">
       <div className="w-full h-full ">
@@ -68,34 +82,47 @@ function Page() {
                   <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
                     Email
                   </h2>
+                  <p className="text-neutral-300 mb-4 ">{user.user.email}</p>
+                  <div className="mb-2 border-b border-neutral-700 pb-2 flex justify-between items-center">
+                    <h2 className="text-2xl font-bold text-neutral-300 ">
+                      Address
+                    </h2>
+                    <Link href="/address" className="underline">
+                      {user.user.user_metadata.address ? "Edit" : "Add"}
+                    </Link>
+                  </div>
                   <p className="text-neutral-300 mb-4 md:mb-0">
-                    {user.user.email}
+                    {user.user.user_metadata.address
+                      ? formatAddress(user.user.user_metadata.address)
+                      : "No address set"}
                   </p>
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
-                    Period start
-                  </h2>
-                  <p className="text-neutral-300 mb-4">
-                    {formatDate(subscription.data[0].current_period_start)}
-                  </p>
-                  <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
-                    Period end
-                  </h2>
-                  <p className="text-neutral-300 mb-4 md:mb-0">
-                    {formatDate(subscription.data[0].current_period_end)}
-                  </p>
-                </div>
-                <div>
+                {subscription.data && subscription.data.length > 0 && (
+                  <div>
+                    <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
+                      Period start
+                    </h2>
+                    <p className="text-neutral-300 mb-4">
+                      {formatDate(subscription.data[0].current_period_start)}
+                    </p>
+                    <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
+                      Period end
+                    </h2>
+                    <p className="text-neutral-300 mb-4 md:mb-0">
+                      {formatDate(subscription.data[0].current_period_end)}
+                    </p>
+                  </div>
+                )}
+                <div className="flex flex-col justify-between">
                   <div>
                     <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
                       Subscription
                     </h2>
-                    <p className="text-neutral-300 mb-4 ">
+                    <div className="text-neutral-300 mb-4 ">
                       {subscription.isSubscribed
                         ? "Subscribed"
                         : "Not Subscribed"}
-                    </p>
+                    </div>
                   </div>
                   <div className="flex flex-col items-center">
                     {subscription.isSubscribed ? (
@@ -119,8 +146,12 @@ function Page() {
                       </>
                     ) : (
                       <Link
-                        href="/subscribe"
-                        className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600"
+                        href={
+                          user.user.user_metadata.address
+                            ? "/address"
+                            : "/subscribe"
+                        }
+                        className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600 w-full text-center"
                       >
                         Subscribe
                       </Link>

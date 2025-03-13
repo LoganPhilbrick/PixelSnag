@@ -13,11 +13,7 @@ import clsx from "clsx";
 
 const stripePromise = loadStripe(
   // eslint-disable-next-line no-undef
-  process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === "true"
-    ? // eslint-disable-next-line no-undef
-      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY
-    : // eslint-disable-next-line no-undef
-      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_LIVE_KEY
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
 const CheckoutForm = () => {
@@ -70,6 +66,8 @@ export default function Subscribe() {
     createSubscription(setOptions);
     setIsLoading(false);
   }, []);
+
+  console.log("options", options);
 
   return (
     <div className="relative bg-[url(/mesh.png)] bg-cover bg-center h-screen w-full flex justify-center items-center md:justify-end">

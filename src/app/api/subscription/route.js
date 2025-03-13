@@ -2,11 +2,7 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(
   // eslint-disable-next-line no-undef
-  process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === "true"
-    ? // eslint-disable-next-line no-undef
-      process.env.NEXT_PUBLIC_STRIPE_TEST_SECRET_KEY
-    : // eslint-disable-next-line no-undef
-      process.env.NEXT_PUBLIC_STRIPE_LIVE_SECRET_KEY
+  process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY
 );
 
 export async function GET(request) {

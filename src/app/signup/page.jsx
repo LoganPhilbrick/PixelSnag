@@ -38,7 +38,7 @@ function Page() {
                 if (error) {
                   throw new Error(JSON.stringify(error));
                 }
-                router.push("/subscribe");
+                router.push("/address" + "?redirectTo=/subscribe");
               } catch (error) {
                 console.log(error.message);
               } finally {

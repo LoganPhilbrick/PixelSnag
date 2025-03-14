@@ -25,6 +25,7 @@ export default async function Navbar() {
           </Link>
         )}
       </div>
+      {/* eslint-disable-next-line no-undef */}
     </nav>
   );
 }

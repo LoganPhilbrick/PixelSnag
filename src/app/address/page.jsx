@@ -6,18 +6,21 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, AddressElement } from "@stripe/react-stripe-js";
 import RoundButton from "../../components/RoundButton";
+import { PulseLoader } from "react-spinners";
+import clsx from "clsx";
 
 const stripePromise = loadStripe(
   // eslint-disable-next-line no-undef
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-const createSetupIntent = async (setSetupIntent) => {
+const createSetupIntent = async (setSetupIntent, setIsLoading) => {
   const res = await fetch("/api/create-setup-intent", {
     method: "POST",
   });
   const data = await res.json();
   setSetupIntent(data);
+  setIsLoading(false);
 };
 
 const updateCustomerAddress = async (address) => {
@@ -32,6 +35,7 @@ const updateCustomerAddress = async (address) => {
 function Page() {
   const [_, setUser] = useState(null);
   const [setupIntent, setSetupIntent] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [address, setAddress] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -56,7 +60,7 @@ function Page() {
   }, [router]);
 
   useEffect(() => {
-    createSetupIntent(setSetupIntent);
+    createSetupIntent(setSetupIntent, setIsLoading);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -75,8 +79,16 @@ function Page() {
         <RoundButton onClick={() => router.back()} text="Back" />
       </div>
       <div className="w-full md:w-1/2 md:h-full bg-neutral-800 max-w-lg p-8 rounded-lg md:rounded-none shadow-lg z-50">
-        <form onSubmit={handleSubmit}>
-          {setupIntent && (
+        <form
+          onSubmit={handleSubmit}
+          className={clsx(
+            "flex flex-col gap-4",
+            isLoading ? "flex justify-center items-center h-full" : ""
+          )}
+        >
+          {isLoading ? (
+            <PulseLoader color="#155dfc" speedMultiplier={0.85} />
+          ) : (
             <Elements
               stripe={stripePromise}
               options={{

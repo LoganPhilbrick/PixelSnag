@@ -32,11 +32,7 @@ export async function POST() {
     customer: user.data.user.user_metadata.stripe_customer_id,
     items: [
       {
-        price:
-          // eslint-disable-next-line no-undef
-          process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === true
-            ? "price_1R1HW0Ru8vr2oRZohHhIDQ95"
-            : "price_1R1HX9Ru8vr2oRZocEBf9mN6",
+        price: "price_1R1HW0Ru8vr2oRZohHhIDQ95",
       },
     ],
     payment_behavior: "default_incomplete",

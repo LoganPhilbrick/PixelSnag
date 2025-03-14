@@ -5,6 +5,7 @@ import { createClient } from "../../utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, AddressElement } from "@stripe/react-stripe-js";
+import RoundButton from "../../components/RoundButton";
 
 const stripePromise = loadStripe(
   // eslint-disable-next-line no-undef
@@ -16,7 +17,6 @@ const createSetupIntent = async (setSetupIntent) => {
     method: "POST",
   });
   const data = await res.json();
-  console.log(data);
   setSetupIntent(data);
 };
 
@@ -71,6 +71,9 @@ function Page() {
   return (
     <div className="relative bg-[url(/mesh.png)] bg-cover bg-center h-screen w-full flex justify-center items-center md:justify-end">
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-[#050505] to-transparent" />
+      <div className="absolute top-0 left-0 p-4">
+        <RoundButton onClick={() => router.back()} text="Back" />
+      </div>
       <div className="w-full md:w-1/2 md:h-full bg-neutral-800 max-w-lg p-8 rounded-lg md:rounded-none shadow-lg z-50">
         <form onSubmit={handleSubmit}>
           {setupIntent && (

@@ -152,10 +152,10 @@ function Page() {
                       <Link
                         href={
                           user.user.user_metadata.address
-                            ? "/address"
-                            : "/subscribe"
+                            ? "/subscribe"
+                            : "/address"
                         }
-                        className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600 w-full text-center"
+                        className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600 w-full text-center hover:bg-blue-700 transition-all duration-300"
                       >
                         Subscribe
                       </Link>

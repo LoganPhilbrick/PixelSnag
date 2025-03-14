@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "../../../utils/supabase/server";
 
+// eslint-disable-next-line no-undef
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 export async function POST() {
   try {
@@ -12,10 +13,7 @@ export async function POST() {
 
     // Ensure a customer ID is provided
     if (!user.user_metadata.stripe_customer_id) {
-      return NextResponse.json(
-        { error: "Missing customer ID" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing customer ID" }, { status: 400 });
     }
 
     // Create a SetupIntent for collecting billing details
@@ -30,9 +28,6 @@ export async function POST() {
     return NextResponse.json({ clientSecret: setupIntent.client_secret });
   } catch (error) {
     console.error("SetupIntent Error:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -9,7 +9,7 @@ import {
 import { useState, useEffect } from "react";
 import { PulseLoader } from "react-spinners";
 import clsx from "clsx";
-import { formatCurrency } from "../utils/supabase/currency";
+import { formatCurrency } from "../utils/currency";
 import { useRouter } from "next/navigation";
 import RoundButton from "../components/RoundButton";
 

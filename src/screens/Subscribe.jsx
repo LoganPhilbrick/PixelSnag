@@ -94,7 +94,7 @@ export default function Subscribe() {
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-[#050505] to-transparent" />
       <div
         className={clsx(
-          "w-full md:w-1/2 md:h-full bg-neutral-800 max-w-lg p-8 rounded-lg md:rounded-none shadow-lg z-50",
+          "w-full md:w-1/2 md:h-full bg-neutral-800 max-w-lg p-8 rounded-lg md:rounded-none shadow-lg z-50 overflow-y-auto",
           isLoading || !options ? "flex justify-center items-center" : ""
         )}
       >

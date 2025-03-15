@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "../../../utils/supabase/server";
 
+// eslint-disable-next-line no-undef
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 export async function POST() {
   try {

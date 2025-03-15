@@ -1,28 +1,40 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { createClient } from "../../utils/supabase/client";
 import Link from "next/link";
 import PulseLoader from "react-spinners/PulseLoader";
 import { redirect } from "next/navigation";
+import { getVersionNumber } from "../../utils/versionNumber";
 
 function Page() {
   const [user, setUser] = useState(null);
   const [subscription, setSubscription] = useState(null);
+  const [downloadLinks, setDownloadLinks] = useState([]);
+
+  const fetchSubscription = useCallback(async () => {
+    const supabase = createClient();
+    const { data: userData } = await supabase.auth.getUser();
+    setUser(userData);
+
+    const subscriptionData = await fetch(
+      `/api/subscription?stripeCustomerId=${userData.user.user_metadata.stripe_customer_id}`
+    ).then((res) => res.json());
+    setSubscription(subscriptionData);
+  }, []);
+
+  const fetchDownloadLinks = useCallback(async () => {
+    const response = await fetch("/api/get-download-links?signed=true");
+    const data = await response.json();
+    setDownloadLinks(data.files);
+  }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const supabase = createClient();
-      const { data: userData } = await supabase.auth.getUser();
-      setUser(userData);
+    fetchSubscription();
+  }, [fetchSubscription]);
 
-      const subscriptionData = await fetch(
-        `/api/subscription?stripeCustomerId=${userData.user.user_metadata.stripe_customer_id}`
-      ).then((res) => res.json());
-      setSubscription(subscriptionData);
-    };
-
-    fetchData();
-  }, []);
+  useEffect(() => {
+    fetchDownloadLinks();
+  }, [fetchDownloadLinks]);
 
   const handleSignOut = async () => {
     const supabase = createClient();
@@ -50,7 +62,7 @@ function Page() {
   };
 
   return (
-    <div className="w-full h-screen bg-neutral-900">
+    <div className="w-full min-h-screen bg-neutral-900 pb-10">
       <div className="w-full h-full ">
         <div className="container mx-auto pt-10 ">
           <div className="flex justify-between items-center mx-4 md:mx-0">
@@ -69,7 +81,7 @@ function Page() {
               <PulseLoader color="#155dfc" speedMultiplier={0.85} />
             </div>
           ) : (
-            <div className="bg-neutral-800 rounded-xl p-6 m-4 md:m-0">
+            <div className="bg-neutral-800 rounded-xl p-6 m-4 md:m-0 md:mb-6">
               <div className="flex flex-col md:flex-row justify-between ">
                 <div>
                   <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
@@ -162,6 +174,35 @@ function Page() {
                     )}
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+          {downloadLinks.length > 0 && (
+            <div className="bg-neutral-800 rounded-xl p-6 m-4 md:m-0">
+              <h2 className="text-2xl font-bold text-neutral-300 mb-4 border-b border-neutral-700 pb-2">
+                Download Links
+              </h2>
+              <div className="text-neutral-300 mb-4 flex flex-col gap-4 md:flex-row ">
+                {downloadLinks.map(({ system, files }) => (
+                  <div className="w-full" key={system}>
+                    <h3 className="text-lg font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
+                      {system}
+                    </h3>
+                    <div className="flex flex-col">
+                      {files.slice(0, 3).map((url) => (
+                        <a
+                          key={url}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-neutral-300 mb-2 hover:text-blue-500 transition-all duration-300"
+                        >
+                          {getVersionNumber(url)}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

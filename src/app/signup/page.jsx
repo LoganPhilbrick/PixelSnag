@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { signup } from "./actions";
+import Link from "next/link";
 
 const signupSchema = Yup.object().shape({
   email: Yup.string()
@@ -140,6 +141,16 @@ function Page() {
             )}
           </Formik>
         </div>
+      </div>
+      <div className="absolute bottom-0 left-0 w-full bg-neutral-900 p-4">
+        View our{" "}
+        <Link href="/privacy-policy" className="text-blue-500">
+          Privacy Policy
+        </Link>
+        {" and "}
+        <Link href="/terms-of-use" className="text-blue-500">
+          Terms of Use
+        </Link>
       </div>
     </div>
   );

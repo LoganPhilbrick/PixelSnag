@@ -18,7 +18,7 @@ export default function Navbar() {
   }, [supabase]);
 
   return (
-    <nav className="flex items-center justify-between h-48 w-full px-4">
+    <nav className="flex items-center justify-between h-24 w-full px-4">
       <div className="flex items-center gap-2">
         <Image src="/logo.svg" alt="logo" width={24} height={24} />
         <h2 className="text-3xl">PixelSnag</h2>

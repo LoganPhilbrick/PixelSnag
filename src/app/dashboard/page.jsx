@@ -238,7 +238,7 @@ function Page() {
               <h2 className="text-2xl font-bold text-neutral-300 mb-4 border-b border-neutral-700 pb-2">
                 Download Links
               </h2>
-              {subscription.isSubscribed ? (
+              {subscription && subscription.isSubscribed ? (
                 <div className="text-neutral-300 mb-4 flex flex-col gap-4 md:flex-row ">
                   {downloadLinks.map(({ system, files }) => (
                     <div className="w-full" key={system}>
@@ -252,7 +252,7 @@ function Page() {
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-neutral-300 mb-2 hover:text-blue-500 transition-all duration-300"
+                            className="text-blue-500 mb-2 hover:text-blue-600 transition-all duration-300 underline"
                           >
                             {getVersionNumber(url)}
                           </a>

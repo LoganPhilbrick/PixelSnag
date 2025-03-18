@@ -12,6 +12,7 @@ import clsx from "clsx";
 import { formatCurrency } from "../utils/currency";
 import { useRouter } from "next/navigation";
 import RoundButton from "../components/RoundButton";
+import SubscriptionCard from "../components/SubscriptionCard";
 
 const stripePromise = loadStripe(
   // eslint-disable-next-line no-undef
@@ -28,16 +29,20 @@ const CheckoutForm = ({ subscription }) => {
     if (!stripe || !elements) {
       return;
     }
-    const { error } = await stripe.confirmPayment({
+    const { setupIntent, error } = await stripe.confirmSetup({
       elements,
       confirmParams: {
         return_url: `${window.location.origin}/dashboard`,
       },
     });
+
     if (error) {
       alert(error.message);
+    } else {
+      alert("Payment successful: " + setupIntent);
     }
   };
+  console.log(subscription);
 
   return (
     <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
@@ -65,9 +70,24 @@ const CheckoutForm = ({ subscription }) => {
         type="submit"
         className="bg-blue-500 text-white px-4 py-2 rounded-md"
       >
-        Subscribe for {formatCurrency(subscription.latest_invoice.total)}{" "}
-        monthly
+        Subscribe for {formatCurrency(subscription.plan.amount)} monthly
       </button>
+      <p className="text-[12px] text-gray-400">
+        You will not be charged today. Your <strong>14-day free trial</strong>{" "}
+        starts now, and you will be charged{" "}
+        <strong>{formatCurrency(subscription.plan.amount)}/month</strong> on{" "}
+        <strong>
+          {new Date(subscription.current_period_end * 1000).toLocaleDateString(
+            "en-US",
+            {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }
+          )}
+        </strong>{" "}
+        unless you cancel before then.
+      </p>
     </form>
   );
 };
@@ -90,11 +110,14 @@ export default function Subscribe() {
   }, []);
 
   return (
-    <div className="relative bg-[url(/mesh.png)] bg-cover bg-center h-screen w-full flex justify-center items-center md:justify-end">
+    <div className="relative bg-[url(/mesh.png)] bg-cover bg-center h-screen w-full flex justify-center items-center md:justify-between">
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-[#050505] to-transparent" />
+      <div className="hidden md:flex flex-1 justify-center items-center  ">
+        <SubscriptionCard />
+      </div>
       <div
         className={clsx(
-          "w-full md:w-1/2 md:h-full bg-neutral-800 max-w-lg p-8 rounded-lg md:rounded-none shadow-lg z-50 overflow-y-auto",
+          "w-full md:w-1/2 md:h-full bg-neutral-800 max-w-lg p-8  rounded-lg md:rounded-none shadow-lg z-50 overflow-y-auto",
           isLoading || !options ? "flex justify-center items-center" : ""
         )}
       >

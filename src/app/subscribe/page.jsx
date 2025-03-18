@@ -1,4 +1,3 @@
-import React from "react";
 import Subscribe from "../../screens/Subscribe";
 import { createClient } from "../../utils/supabase/server";
 import { redirect } from "next/navigation";

@@ -1,15 +1,29 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Link from "next/link";
 import { login } from "./actions";
 
 export default function Page() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSubmit(formData) {
+    try {
+      setIsLoading(true);
+      await login(formData);
+    } catch (error) {
+      console.error("Login failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <>
       <div className="relative z-40 flex justify-center items-center w-full h-screen bg-[url(/mesh.png)] bg-center bg-no-repeat bg-[length:100%_100%]">
         <div className="absolute top-0 left-0 -z-50 w-full h-full bg-gradient-to-t from-[#050505] to-transparent" />
         <div className="container mx-auto max-w-xl h-4/5 px-4 md:px-0">
           <div className="w-full h-full flex flex-col items-center justify-center px-4 bg-zinc-700 rounded-xl shadow-2xl shadow-black/50">
-            <form className="w-full max-w-md" action={login}>
+            <form className="w-full max-w-md" action={handleSubmit}>
               <div className="flex flex-col gap-4">
                 <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start">
                   Log In
@@ -55,8 +69,9 @@ export default function Page() {
                   <button
                     type="submit"
                     className="bg-blue-500 text-white p-2 rounded-md w-full"
+                    disabled={isLoading}
                   >
-                    Log In
+                    {isLoading ? "Logging in..." : "Log In"}
                   </button>
                   <div className="flex items-center">
                     <p className="m-2">or</p>

@@ -84,19 +84,61 @@ function Page() {
             <div className="bg-neutral-800 rounded-xl p-6 m-4 md:m-0 md:mb-6">
               <div className="flex flex-col md:flex-row justify-between ">
                 <div>
-                  <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
+                  <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2 flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                      />
+                    </svg>
                     User
                   </h2>
                   <p className="text-neutral-300 mb-4">
                     {user.user.user_metadata.first_name}{" "}
                     {user.user.user_metadata.last_name}
                   </p>
-                  <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
+                  <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2 flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25"
+                      />
+                    </svg>
                     Email
                   </h2>
                   <p className="text-neutral-300 mb-4 ">{user.user.email}</p>
                   <div className="mb-2 border-b border-neutral-700 pb-2 flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-neutral-300 ">
+                    <h2 className="text-2xl font-bold text-neutral-300 flex items-center gap-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                        />
+                      </svg>
                       Address
                     </h2>
                     <Link
@@ -131,7 +173,21 @@ function Page() {
                 )}
                 <div className="flex flex-col justify-between">
                   <div>
-                    <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
+                    <h2 className="text-2xl font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2 flex items-center gap-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                        />
+                      </svg>
                       Subscription
                     </h2>
                     <div className="text-neutral-300 mb-4 ">
@@ -182,28 +238,34 @@ function Page() {
               <h2 className="text-2xl font-bold text-neutral-300 mb-4 border-b border-neutral-700 pb-2">
                 Download Links
               </h2>
-              <div className="text-neutral-300 mb-4 flex flex-col gap-4 md:flex-row ">
-                {downloadLinks.map(({ system, files }) => (
-                  <div className="w-full" key={system}>
-                    <h3 className="text-lg font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
-                      {system}
-                    </h3>
-                    <div className="flex flex-col">
-                      {files.slice(0, 3).map((url) => (
-                        <a
-                          key={url}
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-neutral-300 mb-2 hover:text-blue-500 transition-all duration-300"
-                        >
-                          {getVersionNumber(url)}
-                        </a>
-                      ))}
+              {subscription.isSubscribed ? (
+                <div className="text-neutral-300 mb-4 flex flex-col gap-4 md:flex-row ">
+                  {downloadLinks.map(({ system, files }) => (
+                    <div className="w-full" key={system}>
+                      <h3 className="text-lg font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
+                        {system}
+                      </h3>
+                      <div className="flex flex-col">
+                        {files.slice(0, 3).map((url) => (
+                          <a
+                            key={url}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-neutral-300 mb-2 hover:text-blue-500 transition-all duration-300"
+                          >
+                            {getVersionNumber(url)}
+                          </a>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-neutral-300 mb-4">
+                  You need to subscribe to download the application!
+                </p>
+              )}
             </div>
           )}
         </div>

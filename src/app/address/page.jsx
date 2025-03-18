@@ -89,7 +89,7 @@ function Page() {
         <div className="absolute top-0 left-0 p-4">
           <RoundButton onClick={() => router.back()} text="Back" />
         </div>
-        <div className="w-full md:w-1/2 md:h-full bg-neutral-800 max-w-lg p-8 rounded-lg md:rounded-none shadow-lg z-50">
+        <div className="w-full md:w-1/2 md:h-full bg-neutral-800 max-w-lg p-8 rounded-lg md:rounded-none shadow-lg z-50 overflow-y-auto">
           <form
             onSubmit={handleSubmit}
             className={clsx(
@@ -125,6 +125,9 @@ function Page() {
                 >
                   Submit
                 </button>
+                <p className="text-neutral-400 text-[12px] mt-2">
+                  We're collecting this information to for billing purposes.
+                </p>
               </Elements>
             )}
           </form>

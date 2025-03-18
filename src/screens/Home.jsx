@@ -5,7 +5,7 @@ import ContactForm from "../components/ContactForm";
 import Features from "../components/Features";
 import VideoSection from "../components/VideoSection";
 import Footer from "../components/Footer";
-
+import SubscriptionCard from "../components/SubscriptionCard";
 export default function Home() {
   return (
     <>
@@ -13,6 +13,11 @@ export default function Home() {
         <Hero />
         <Features />
         <VideoSection />
+        <SubscriptionCard
+          containerClass="sm:flex   mx-auto mt-24"
+          showButton
+          showBackground
+        />
         <ContactForm />
         <Footer />
         <CookieConsent />

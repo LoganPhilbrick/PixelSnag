@@ -6,6 +6,7 @@ export async function POST() {
   const supabase = await createClient();
   const user = await supabase.auth.getUser();
 
+  // eslint-disable-next-line no-undef
   const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
   // Update Stripe customer address (optional)

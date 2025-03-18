@@ -55,7 +55,7 @@ export default function Navbar() {
                 Login
               </Link>
               <Link href="/signup" className="bg-white text-black py-4 px-8 rounded-full hover:bg-neutral-200 transition-all duration-200">
-                Download
+                Download Now
               </Link>
             </>
           ))}

@@ -1,3 +1,5 @@
+import React from "react";
+import CookieConsent from "../components/CookiesConsent";
 import Hero from "../components/Hero";
 import ContactForm from "../components/ContactForm";
 import Features from "../components/Features";
@@ -11,6 +13,7 @@ export default function Home() {
         <Features />
         <ContactForm />
         <Footer />
+        <CookieConsent />
       </div>
     </>
   );

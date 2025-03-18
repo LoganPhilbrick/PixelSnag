@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Features() {
   const cardInfo = [
@@ -61,6 +62,9 @@ export default function Features() {
             </div>
           ))}
         </div>
+        <Link href="/signup" className="bg-blue-600 text-lg py-6 px-12 mt-16 sm:mt-28 rounded-full hover:bg-blue-700 transition-all duration-200">
+          Download Now
+        </Link>
       </div>
     </>
   );

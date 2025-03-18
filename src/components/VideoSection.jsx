@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 export default function VideoSection() {
   return (
@@ -35,9 +34,6 @@ export default function VideoSection() {
           <p className="text-sm sm:text-base text-start">Edited screenshots can be exported or copied directly to the clipboard for pasting and sharing.</p>
         </div>
       </div>
-      <Link href="/signup" className="bg-blue-600 text-lg py-6 px-12 mt-16 sm:mt-28 rounded-full hover:bg-blue-700 transition-all duration-200">
-        Download
-      </Link>
     </div>
   );
 }

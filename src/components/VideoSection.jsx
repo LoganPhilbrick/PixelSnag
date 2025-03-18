@@ -2,7 +2,7 @@ import React from "react";
 
 export default function VideoSection() {
   return (
-    <div className="flex flex-col items-center w-full">
+    <div id="showcase" className="flex flex-col items-center w-full">
       <h2 className="text-xl md:text-3xl lg:text-5xl px-6 font-semibold bg-gradient-to-b from-white to-zinc-400 text-transparent bg-clip-text my-12 sm:my-24 p-1.5">Easy as 1, 2, 3...</h2>
       <div className="flex xl:flex-row flex-col-reverse items-center justify-between md:w-2/3 xl:w-2/3 xl:px-0 px-12 mb-24">
         <video autoPlay loop muted className="w-full xl:w-1/2 rounded-xl">

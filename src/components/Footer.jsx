@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -11,24 +12,24 @@ export default function Footer() {
         <div className="w-full flex justify-center">
           <div className="flex flex-col gap-2 font-light">
             <h4 className="font-normal mb-2">Navigation</h4>
-            <a href="#hero">Welcome</a>
-            <a href="#features">Features</a>
-            <a href="#">Showcase</a>
-            <a href="#">Contact</a>
+            <Link href="#">Welcome</Link>
+            <Link href="#features">Features</Link>
+            <Link href="#showcase">Showcase</Link>
+            <Link href="#contactForm">Contact</Link>
           </div>
         </div>
         <div className="w-full flex justify-center">
           <div className="flex flex-col gap-2 font-light">
             <h4 className="font-normal mb-2">More</h4>
-            <a href="#">Sign Up</a>
-            <a href="#">Login</a>
+            <Link href="/signup">Sign Up</Link>
+            <Link href="/login">Login</Link>
           </div>
         </div>
         <div className="w-full flex justify-center row-span-2">
           <div className="flex flex-col gap-2 font-light">
             <h4 className="font-normal mb-2">Resources</h4>
-            <a href="#">Terms of Service</a>
-            <a href="#">Privacy Policy</a>
+            <Link href="/terms-of-use">Terms of Service</Link>
+            <Link href="/privacy-policy">Privacy Policy</Link>
           </div>
         </div>
       </div>

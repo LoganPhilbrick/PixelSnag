@@ -46,7 +46,7 @@ function ContactForm() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center mt-12 sm:mt-24 sm:px-0 px-8">
+    <div id="contactForm" className="flex flex-col items-center mt-12 sm:mt-24 sm:px-0 px-8">
       <h2 className="text-2xl md:text-3xl lg:text-5xl px-6 font-semibold bg-gradient-to-b from-white to-zinc-400 text-transparent bg-clip-text mb-12 py-1.5 sm:mb-24">Wanna get in touch?</h2>
       <div className="container sm:w-5/6 md:w-4/6 lg:w-2/3 xl:w-2/5 w-full h-full px-6 pb-6 mx-auto mb-24 rounded-xl bg-neutral-900">
         <h1 className="text-2xl font-bold sm:my-4 py-4 text-neutral-200">Feedback</h1>

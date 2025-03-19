@@ -25,6 +25,10 @@ const nextConfig = {
             value: "Content-Type, Accept",
           },
           {
+            key: "Access-Control-Max-Age",
+            value: "86400", // 24 hours in seconds
+          },
+          {
             key: "Access-Control-Allow-Credentials",
             value: "true",
           },

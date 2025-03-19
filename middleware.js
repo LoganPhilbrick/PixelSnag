@@ -1,11 +1,5 @@
 import { NextResponse } from "next/server";
-const allowedOrigins = [
-  "http://localhost:9229",
-  "http://127.0.0.1:9229",
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  "https://pixelsnag.it.com",
-];
+const allowedOrigins = ["*"];
 
 export function middleware(request) {
   const origin = request.headers.get("origin");

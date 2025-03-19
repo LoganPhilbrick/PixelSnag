@@ -6,31 +6,13 @@ const stripe = new Stripe(
 );
 
 export async function GET(request) {
-  // Add CORS headers
-  const allowedOrigins = [
-    "http://localhost:3000",
-    "https://pixelsnag.it.com",
-    "http://localhost:9002",
-  ]; // Adjust these URLs
-  const origin = request.headers.get("origin");
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": allowedOrigins.includes(origin)
-      ? origin
-      : allowedOrigins[0],
-    "Access-Control-Allow-Methods": "GET",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
-
-  const url = new URL(request.url, `http://${request.headers.get("host")}`);
+  const url = new URL(request.url, `http://${request.headers.get("host")}`); // Ensure absolute URL
   const stripeCustomerId = url.searchParams.get("stripeCustomerId");
 
   if (!stripeCustomerId) {
     return new Response(JSON.stringify({ error: "Customer ID required" }), {
       status: 400,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders,
-      },
+      headers: { "Content-Type": "application/json" },
     });
   }
 
@@ -47,20 +29,14 @@ export async function GET(request) {
       }),
       {
         status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          ...corsHeaders,
-        },
+        headers: { "Content-Type": "application/json" },
       }
     );
   } catch (error) {
     console.error("Stripe error:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders,
-      },
+      headers: { "Content-Type": "application/json" },
     });
   }
 }

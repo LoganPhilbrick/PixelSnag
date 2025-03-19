@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-q;
 const allowedOrigins = [
   "http://localhost:9229",
   "http://127.0.0.1:9229",

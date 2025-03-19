@@ -35,7 +35,7 @@ export async function GET(request) {
     });
   }
 
-  const stripeCustomerId = decodedToken.stripeCustomerId;
+  const stripeCustomerId = url.searchParams.get("stripeCustomerId");
 
   if (!stripeCustomerId) {
     return new Response(JSON.stringify({ error: "Customer ID required" }), {

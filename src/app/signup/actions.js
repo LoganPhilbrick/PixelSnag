@@ -10,6 +10,7 @@ export async function signup(values) {
   const password = values.password?.trim();
   const firstName = values.firstName?.trim();
   const lastName = values.lastName?.trim();
+  const accessCode = values.accessCode?.trim();
 
   if (!email || !password || !firstName || !lastName) {
     return { error: "All fields are required" };
@@ -43,22 +44,25 @@ export async function signup(values) {
     // if it does, use it
     // if it doesn't, create a new one
     // we need to pass the customer id to the supabase auth.signup
-    const existingCustomer = await stripe.customers.list({
-      email,
-    });
-
     let customer;
-
-    if (existingCustomer.data.length > 0) {
-      customer = existingCustomer.data[0];
-    } else {
-      customer = await stripe.customers.create({
+    try {
+      const existingCustomer = await stripe.customers.list({
         email,
-        name: `${firstName} ${lastName}`,
       });
+
+      if (existingCustomer.data.length > 0) {
+        customer = existingCustomer.data[0];
+      } else {
+        customer = await stripe.customers.create({
+          email,
+          name: `${firstName} ${lastName}`,
+        });
+      }
+    } catch (stripeError) {
+      return { error: `Stripe error: ${stripeError.message}` };
     }
 
-    const { error: authError } = await supabase.auth.signUp({
+    const { error: authError, data: user } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -74,8 +78,62 @@ export async function signup(values) {
       return { error: authError.message };
     }
 
+    if (!user) {
+      return { error: "User creation failed" };
+    }
+
+    if (accessCode) {
+      try {
+        const { data: accessCodeData, error: accessCodeError } = await supabase
+          .from("access_codes")
+          .select("*")
+          .eq("code", accessCode)
+          .single();
+
+        if (accessCodeError) {
+          return { error: `Access code error: ${accessCodeError.message}` };
+        }
+
+        if (!accessCodeData) {
+          return { error: "Invalid access code" };
+        }
+
+        if (accessCodeData.user_id) {
+          console.log("Access code has already been used");
+          return { error: "Access code has already been used" };
+        }
+
+        const { error: updateError } = await supabase
+          .from("access_codes")
+          .update({ user_id: user.user.id, redeemed_at: new Date() })
+          .eq("code", accessCode);
+
+        if (updateError) {
+          return {
+            error: `Failed to update access code: ${updateError.message}`,
+          };
+        }
+
+        const { error: userUpdateError } = await supabase.auth.updateUser({
+          data: {
+            access_code: accessCode,
+          },
+        });
+
+        console.log("userUpdateError", userUpdateError);
+
+        if (userUpdateError) {
+          return { error: `Failed to update user: ${userUpdateError.message}` };
+        }
+      } catch (accessCodeError) {
+        return {
+          error: `Access code processing error: ${accessCodeError.message}`,
+        };
+      }
+    }
+
     return { success: true };
   } catch (error) {
-    return { error: error.message };
+    return { error: `Unexpected error: ${error.message}` };
   }
 }

@@ -7,7 +7,35 @@ const stripe = new Stripe(
 
 export async function GET(request) {
   const url = new URL(request.url, `http://${request.headers.get("host")}`); // Ensure absolute URL
-  const stripeCustomerId = url.searchParams.get("stripeCustomerId");
+
+  const authHeader = request.headers.get("authorization");
+
+  if (!authHeader) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const decodedToken = token === "token";
+
+  if (!decodedToken) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const stripeCustomerId = decodedToken.stripeCustomerId;
 
   if (!stripeCustomerId) {
     return new Response(JSON.stringify({ error: "Customer ID required" }), {

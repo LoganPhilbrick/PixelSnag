@@ -27,27 +27,32 @@ const CheckoutForm = ({ subscription }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) {
+      alert("Something went wrong");
       return;
     }
-    const { setupIntent, error } = await stripe.confirmSetup({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/dashboard`,
-      },
-    });
-
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Payment successful: " + setupIntent);
+    try {
+      const { error } = await stripe.confirmSetup({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/dashboard`,
+        },
+      });
+      if (error) {
+        throw new Error(error.message);
+      }
+    } catch (error) {
+      alert(error);
     }
   };
-  console.log(subscription);
 
   return (
     <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
-      <div className="absolute top-0 left-0 p-4">
+      <div className="absolute top-0 left-0 p-4 flex gap-2">
         <RoundButton onClick={() => router.back()} text="Back" />
+        <RoundButton
+          onClick={() => router.push("/dashboard")}
+          text="Dashboard"
+        />
       </div>
       <h1 className="text-2xl font-bold ">Checkout</h1>
       <div className="flex flex-col gap-2">
@@ -93,11 +98,21 @@ const CheckoutForm = ({ subscription }) => {
 };
 
 const createSubscription = async (setOptions) => {
-  const res = await fetch("/api/create-subscription", {
-    method: "POST",
-  });
-  const data = await res.json();
-  setOptions({ ...data });
+  try {
+    const res = await fetch("/api/create-subscription", {
+      method: "POST",
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    setOptions({ ...data });
+  } catch (error) {
+    console.error("Failed to create subscription:", error);
+    alert("Failed to set up subscription. Please try again later.");
+  }
 };
 
 export default function Subscribe() {

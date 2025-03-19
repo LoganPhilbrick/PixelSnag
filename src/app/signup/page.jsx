@@ -7,6 +7,12 @@ import { signup } from "./actions";
 import Link from "next/link";
 
 const signupSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .required("First name is required")
+    .min(2, "First name must be at least 2 characters"),
+  lastName: Yup.string()
+    .required("Last name is required")
+    .min(2, "Last name must be at least 2 characters"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
@@ -30,6 +36,7 @@ function Page() {
               password: "",
               firstName: "",
               lastName: "",
+              accessCode: "",
             }}
             validationSchema={signupSchema}
             onSubmit={async (values) => {
@@ -39,9 +46,13 @@ function Page() {
                 if (error) {
                   throw new Error(JSON.stringify(error));
                 }
-                router.push("/address" + "?redirectTo=/subscribe");
+                if (values.accessCode) {
+                  router.push("/dashboard");
+                } else {
+                  router.push("/address" + "?redirectTo=/subscribe");
+                }
               } catch (error) {
-                console.log(error.message);
+                alert(error);
               } finally {
                 setIsLoading(false);
               }
@@ -119,7 +130,7 @@ function Page() {
                       type="password"
                       id="password"
                       name="password"
-                      className="w-full p-2 rounded-md bg-neutral-900 text-neutral-300 focus:outline-none mb-4 shadow-inset"
+                      className="w-full p-2 rounded-md bg-neutral-900 text-neutral-300 focus:outline-none  shadow-inset"
                       value={values.password}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -128,6 +139,20 @@ function Page() {
                       <p className="text-red-500">{errors.password}</p>
                     )}
                   </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="accessCode" className="text-neutral-300">
+                      Access Code
+                    </label>
+                  </div>
+                  <input
+                    type="text"
+                    id="accessCode"
+                    name="accessCode"
+                    className="w-full p-2 rounded-md bg-neutral-900 text-neutral-300 focus:outline-none  shadow-inset mb-4"
+                    value={values.accessCode}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
                   <button
                     type="submit"
                     className="bg-blue-500 text-white p-2 rounded-md"

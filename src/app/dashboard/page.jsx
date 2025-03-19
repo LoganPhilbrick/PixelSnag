@@ -10,6 +10,13 @@ function Page() {
   const [user, setUser] = useState(null);
   const [subscription, setSubscription] = useState(null);
   const [downloadLinks, setDownloadLinks] = useState([]);
+  const [hasAccessCode, setHasAccessCode] = useState(false);
+
+  const fetchAccessCodeStatus = useCallback(async () => {
+    const response = await fetch("/api/get-access-code-status");
+    const data = await response.json();
+    setHasAccessCode(data.hasAccessCode);
+  }, []);
 
   const fetchSubscription = useCallback(async () => {
     const supabase = createClient();
@@ -30,7 +37,8 @@ function Page() {
 
   useEffect(() => {
     fetchSubscription();
-  }, [fetchSubscription]);
+    fetchAccessCodeStatus();
+  }, [fetchSubscription, fetchAccessCodeStatus]);
 
   useEffect(() => {
     fetchDownloadLinks();
@@ -191,43 +199,46 @@ function Page() {
                       Subscription
                     </h2>
                     <div className="text-neutral-300 mb-4 ">
-                      {subscription.isSubscribed
-                        ? "Subscribed"
-                        : "Not Subscribed"}
+                      {!hasAccessCode
+                        ? subscription.isSubscribed
+                          ? "Subscribed"
+                          : "Not Subscribed"
+                        : " Lifetime Access"}
                     </div>
                   </div>
                   <div className="flex flex-col items-center">
-                    {subscription.isSubscribed ? (
-                      <>
+                    {!hasAccessCode &&
+                      (subscription.isSubscribed ? (
+                        <>
+                          <Link
+                            href={
+                              // eslint-disable-next-line no-undef
+                              process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === true
+                                ? "https://billing.stripe.com/p/login/test_3cs7vSdfe1OQ07e288"
+                                : "https://billing.stripe.com/p/login/6oE3dZ2nw9aO4i48ww"
+                            }
+                            className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600"
+                          >
+                            Manage Subscription
+                          </Link>
+                          <p className="text-neutral-400 text-[12px] mt-2">
+                            You'll be redirected to Stripe
+                            <br />
+                            to manage your subscription.
+                          </p>
+                        </>
+                      ) : (
                         <Link
                           href={
-                            // eslint-disable-next-line no-undef
-                            process.env.NEXT_PUBLIC_STRIPE_TEST_MODE === true
-                              ? "https://billing.stripe.com/p/login/test_3cs7vSdfe1OQ07e288"
-                              : "https://billing.stripe.com/p/login/6oE3dZ2nw9aO4i48ww"
+                            user.user.user_metadata.address
+                              ? "/subscribe"
+                              : "/address"
                           }
-                          className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600"
+                          className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600 w-full text-center hover:bg-blue-700 transition-all duration-300"
                         >
-                          Manage Subscription
+                          Subscribe
                         </Link>
-                        <p className="text-neutral-400 text-[12px] mt-2">
-                          You'll be redirected to Stripe
-                          <br />
-                          to manage your subscription.
-                        </p>
-                      </>
-                    ) : (
-                      <Link
-                        href={
-                          user.user.user_metadata.address
-                            ? "/subscribe"
-                            : "/address"
-                        }
-                        className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600 w-full text-center hover:bg-blue-700 transition-all duration-300"
-                      >
-                        Subscribe
-                      </Link>
-                    )}
+                      ))}
                   </div>
                 </div>
               </div>
@@ -238,7 +249,7 @@ function Page() {
               <h2 className="text-2xl font-bold text-neutral-300 mb-4 border-b border-neutral-700 pb-2">
                 Download Links
               </h2>
-              {subscription && subscription.isSubscribed ? (
+              {(subscription && subscription.isSubscribed) || hasAccessCode ? (
                 <div className="text-neutral-300 mb-4 flex flex-col gap-4 md:flex-row ">
                   {downloadLinks.map(({ system, files }) => (
                     <div className="w-full" key={system}>

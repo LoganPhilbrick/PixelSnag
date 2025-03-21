@@ -97,10 +97,11 @@ const CheckoutForm = ({ subscription }) => {
   );
 };
 
-const createSubscription = async (setOptions) => {
+const createSubscription = async (setOptions, signal) => {
   try {
     const res = await fetch("/api/create-subscription", {
       method: "POST",
+      signal,
     });
 
     if (!res.ok) {
@@ -110,8 +111,10 @@ const createSubscription = async (setOptions) => {
     const data = await res.json();
     setOptions({ ...data });
   } catch (error) {
-    console.error("Failed to create subscription:", error);
-    alert("Failed to set up subscription. Please try again later.");
+    if (error.name !== "AbortError") {
+      console.error("Failed to create subscription:", error);
+      alert("Failed to set up subscription. Please try again later.");
+    }
   }
 };
 
@@ -120,8 +123,19 @@ export default function Subscribe() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    createSubscription(setOptions);
-    setIsLoading(false);
+    const controller = new AbortController();
+
+    const initSubscription = async () => {
+      try {
+        await createSubscription(setOptions, controller.signal);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initSubscription();
+
+    return () => controller.abort();
   }, []);
 
   return (

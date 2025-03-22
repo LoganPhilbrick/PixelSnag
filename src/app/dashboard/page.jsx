@@ -30,7 +30,7 @@ function Page() {
   }, []);
 
   const fetchDownloadLinks = useCallback(async () => {
-    const response = await fetch("/api/get-download-links?signed=true");
+    const response = await fetch("/api/get-download-links");
     const data = await response.json();
     setDownloadLinks(data.files);
   }, []);

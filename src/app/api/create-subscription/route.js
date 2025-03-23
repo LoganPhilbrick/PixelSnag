@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST() {
   try {
+    // Step 1: Get the authenticated user
     const supabase = await createClient();
     const {
       data: { user },
@@ -17,7 +18,8 @@ export async function POST() {
       );
     }
 
-    if (!user.user_metadata?.stripe_customer_id) {
+    const customerId = user.user_metadata?.stripe_customer_id;
+    if (!customerId) {
       return NextResponse.json(
         { error: "Stripe customer ID not found" },
         { status: 400 }
@@ -29,26 +31,38 @@ export async function POST() {
       apiVersion: "2023-10-16",
     });
 
-    // (Optional) Update Stripe customer with address or metadata
-    await stripe.customers.update(user.user_metadata.stripe_customer_id, {
+    // Step 2 (optional): Update the Stripe customer with address info if available
+    await stripe.customers.update(customerId, {
       address: user.user_metadata.address || undefined,
     });
 
+    // Step 3: Create the subscription with trial and setup intent
     const subscription = await stripe.subscriptions.create({
-      customer: user.user_metadata.stripe_customer_id,
-      items: [{ price: "price_1R1HX9Ru8vr2oRZocEBf9mN6" }],
-      trial_period_days: 1, // Adjust as needed
+      customer: customerId,
+      items: [
+        {
+          price: "price_1R1HX9Ru8vr2oRZocEBf9mN6", // <-- Replace with your real price ID
+        },
+      ],
+      trial_period_days: 1, // <-- Set your trial length here
       payment_behavior: "default_incomplete",
       payment_settings: {
         save_default_payment_method: "on_subscription",
       },
-      expand: ["latest_invoice.payment_intent"],
+      expand: ["pending_setup_intent", "latest_invoice"],
       automatic_tax: { enabled: true },
     });
 
-    const paymentIntent = subscription.latest_invoice?.payment_intent;
+    const setupIntent = subscription.pending_setup_intent;
 
-    if (!paymentIntent || !paymentIntent.client_secret) {
+    // Step 4: Validate and return the SetupIntent's client secret
+    if (
+      !setupIntent ||
+      typeof setupIntent !== "object" ||
+      !("client_secret" in setupIntent) ||
+      !setupIntent.client_secret
+    ) {
+      console.error("Missing setup intent client secret:", setupIntent);
       return NextResponse.json(
         { error: "Unable to initialize payment." },
         { status: 500 }
@@ -57,7 +71,7 @@ export async function POST() {
 
     return NextResponse.json({
       subscriptionId: subscription.id,
-      clientSecret: paymentIntent.client_secret,
+      clientSecret: setupIntent.client_secret,
       subscription,
     });
   } catch (error) {

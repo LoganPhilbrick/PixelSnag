@@ -31,7 +31,7 @@ const CheckoutForm = ({ subscription }) => {
       return;
     }
     try {
-      const { error } = await stripe.confirmSetup({
+      const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/dashboard`,

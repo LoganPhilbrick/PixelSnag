@@ -25,42 +25,45 @@ export async function POST() {
     }
 
     // eslint-disable-next-line no-undef
-    const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
+    const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
+      apiVersion: "2023-10-16",
+    });
 
-    try {
-      // Update Stripe customer address (optional)
-      await stripe.customers.update(user.user_metadata.stripe_customer_id, {
-        address: user.user_metadata.address,
-      });
+    // (Optional) Update Stripe customer with address or metadata
+    await stripe.customers.update(user.user_metadata.stripe_customer_id, {
+      address: user.user_metadata.address || undefined,
+    });
 
-      const subscription = await stripe.subscriptions.create({
-        customer: user.user_metadata.stripe_customer_id,
-        items: [{ price: "price_1R1HX9Ru8vr2oRZocEBf9mN6" }],
-        payment_behavior: "default_incomplete",
-        payment_settings: { save_default_payment_method: "on_subscription" },
-        expand: ["latest_invoice.payment_intent"],
-        automatic_tax: { enabled: true },
-        trial_period_days: 1,
-      });
+    const subscription = await stripe.subscriptions.create({
+      customer: user.user_metadata.stripe_customer_id,
+      items: [{ price: "price_1R1HX9Ru8vr2oRZocEBf9mN6" }],
+      trial_period_days: 1, // Adjust as needed
+      payment_behavior: "default_incomplete",
+      payment_settings: {
+        save_default_payment_method: "on_subscription",
+      },
+      expand: ["latest_invoice.payment_intent"],
+      automatic_tax: { enabled: true },
+    });
 
-      const setupIntent = await stripe.setupIntents.create({
-        customer: user.user_metadata.stripe_customer_id,
-        usage: "off_session",
-      });
+    const paymentIntent = subscription.latest_invoice?.payment_intent;
 
-      return NextResponse.json({
-        subscriptionId: subscription.id,
-        clientSecret: setupIntent.client_secret,
-        subscription,
-      });
-    } catch (stripeError) {
-      console.error("Stripe error:", stripeError);
-      return NextResponse.json({ error: stripeError.message }, { status: 400 });
+    if (!paymentIntent || !paymentIntent.client_secret) {
+      return NextResponse.json(
+        { error: "Unable to initialize payment." },
+        { status: 500 }
+      );
     }
+
+    return NextResponse.json({
+      subscriptionId: subscription.id,
+      clientSecret: paymentIntent.client_secret,
+      subscription,
+    });
   } catch (error) {
     console.error("Server error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: error.message || "Internal server error" },
       { status: 500 }
     );
   }

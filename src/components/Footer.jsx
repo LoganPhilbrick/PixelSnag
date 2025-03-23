@@ -30,7 +30,7 @@ export default function Footer() {
             <h4 className="font-normal mb-2">Resources</h4>
             <Link href="/terms-of-use">Terms of Service</Link>
             <Link href="/privacy-policy">Privacy Policy</Link>
-            <p>© 2025 PixelSnag. All rights reserved.</p>
+            <p>© 2025 PixelSnag. All rights reserved. :3</p>
           </div>
         </div>
       </div>

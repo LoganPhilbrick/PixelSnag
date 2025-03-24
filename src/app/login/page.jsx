@@ -2,9 +2,12 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { login } from "./actions";
+import ResetPasswordModal from "../../components/ResetPasswordModal";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
+    useState(false);
 
   async function handleSubmit(formData) {
     try {
@@ -17,9 +20,19 @@ export default function Page() {
     }
   }
 
+  const handleResetPasswordButtonClick = () => {
+    setIsResetPasswordModalOpen(true);
+  };
+
   return (
     <>
       <div className="relative z-40 flex justify-center items-center w-full h-screen bg-[url(/mesh.png)] bg-center bg-no-repeat bg-[length:100%_100%]">
+        {isResetPasswordModalOpen && (
+          <ResetPasswordModal
+            isOpen={isResetPasswordModalOpen}
+            onClose={() => setIsResetPasswordModalOpen(false)}
+          />
+        )}
         <div className="absolute top-0 left-0 -z-50 w-full h-full bg-gradient-to-t from-[#050505] to-transparent" />
         <div className="container mx-auto max-w-xl h-4/5 px-4 md:px-0">
           <div className="w-full h-full flex flex-col items-center justify-center px-4 bg-zinc-700 rounded-xl shadow-2xl shadow-black/50">
@@ -47,8 +60,9 @@ export default function Page() {
                     type="password"
                     id="password"
                     name="password"
-                    className="w-full p-2 rounded-md bg-neutral-900 text-neutral-300 focus:outline-none shadow-inset mb-4"
+                    className="w-full p-2 rounded-md bg-neutral-900 text-neutral-300 focus:outline-none shadow-inset "
                   />
+
                   <input
                     type="text"
                     id="username"
@@ -85,6 +99,17 @@ export default function Page() {
                 </div>
               </div>
             </form>
+            <div className="container mx-auto max-w-md">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleResetPasswordButtonClick();
+                }}
+                className="text-blue-500 hover:text-blue-600 underline self-start mt-4 "
+              >
+                Reset Password
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { createClient } from "../../utils/supabase/client";
 import Link from "next/link";
 import PulseLoader from "react-spinners/PulseLoader";
 import { redirect } from "next/navigation";
-import { getVersionNumber } from "../../utils/versionNumber";
+import { FaWindows, FaApple } from "react-icons/fa";
 
 function Page() {
   const [user, setUser] = useState(null);
@@ -32,6 +32,7 @@ function Page() {
   const fetchDownloadLinks = useCallback(async () => {
     const response = await fetch("/api/get-download-links");
     const data = await response.json();
+    console.log(data);
     setDownloadLinks(data.files);
   }, []);
 
@@ -68,6 +69,29 @@ function Page() {
       </>
     );
   };
+
+  function getMostRecentVersion(urls) {
+    // Extract version numbers from URLs and sort them
+    const versions = urls
+      .map((url) => {
+        // Extract version number using regex
+        const match = url.match(/\d+\.\d+\.\d+/);
+        return match ? match[0] : null;
+      })
+      .filter(Boolean); // Remove any null values
+
+    // Sort versions in descending order
+    const sortedVersions = versions.sort((a, b) => {
+      const [aMajor, aMinor, aPatch] = a.split(".").map(Number);
+      const [bMajor, bMinor, bPatch] = b.split(".").map(Number);
+
+      if (aMajor !== bMajor) return bMajor - aMajor;
+      if (aMinor !== bMinor) return bMinor - aMinor;
+      return bPatch - aPatch;
+    });
+
+    return sortedVersions[0]; // Return highest version
+  }
 
   return (
     <div className="w-full min-h-screen bg-neutral-900 pb-10">
@@ -253,21 +277,27 @@ function Page() {
                 <div className="text-neutral-300 mb-4 flex flex-col gap-4 md:flex-row ">
                   {downloadLinks.map(({ system, files }) => (
                     <div className="w-full" key={system}>
-                      <h3 className="text-lg font-bold text-neutral-300 mb-2 border-b border-neutral-700 pb-2">
+                      <h3 className="text-lg font-bold text-neutral-300 mb-4 border-b border-neutral-700 pb-2">
                         {system}
                       </h3>
                       <div className="flex flex-col">
-                        {files.slice(0, 3).map((url) => (
-                          <a
-                            key={url}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500 mb-2 hover:text-blue-600 transition-all duration-300 underline"
-                          >
-                            {getVersionNumber(url)}
-                          </a>
-                        ))}
+                        <a
+                          href={
+                            files[
+                              files.findIndex((e) =>
+                                e.includes(getMostRecentVersion(files))
+                              )
+                            ]
+                          }
+                          className="bg-blue-600 transition-all hover:bg-blue-700 mr-auto p-4 rounded-md flex items-center gap-2"
+                        >
+                          {system === "Windows" ? (
+                            <FaWindows size={22} />
+                          ) : (
+                            <FaApple size={22} />
+                          )}{" "}
+                          Download for {system}
+                        </a>
                       </div>
                     </div>
                   ))}

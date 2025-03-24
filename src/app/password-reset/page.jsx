@@ -1,10 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import { createClient } from "../../utils/supabase/client";
+import { useRouter } from "next/router";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
+  const router = useRouter();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -18,9 +20,11 @@ export default function Page() {
         throw new Error(JSON.stringify(error.message));
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      alert(error.message);
     } finally {
       setIsLoading(false);
+      alert("Password was successfully updated!");
+      router.push("/");
     }
   }
 

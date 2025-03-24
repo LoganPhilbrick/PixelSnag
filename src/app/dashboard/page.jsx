@@ -32,7 +32,6 @@ function Page() {
   const fetchDownloadLinks = useCallback(async () => {
     const response = await fetch("/api/get-download-links");
     const data = await response.json();
-    console.log(data);
     setDownloadLinks(data.files);
   }, []);
 

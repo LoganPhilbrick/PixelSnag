@@ -6,19 +6,18 @@ import { createClient } from "../../utils/supabase/server";
 
 export async function login(formData) {
   const supabase = await createClient();
+  console.log(formData);
 
   // Check honeypot field - if it's filled, silently fail
-  const honeypot = formData.get("username");
+  const honeypot = formData.username;
   if (honeypot && honeypot.length > 0) {
-    // Redirect to same error page to not reveal it was a honeypot detection
     redirect("/error");
   }
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
+  // Access object properties directly instead of using .get()
   const data = {
-    email: formData.get("email"),
-    password: formData.get("password"),
+    email: formData.email,
+    password: formData.password,
   };
 
   const { error } = await supabase.auth.signInWithPassword(data);

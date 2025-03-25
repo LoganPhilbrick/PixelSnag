@@ -44,7 +44,7 @@ export async function POST() {
           price: "price_1R1HX9Ru8vr2oRZocEBf9mN6", // <-- Replace with your real price ID
         },
       ],
-      trial_period_days: 1, // <-- Set your trial length here
+      trial_period_days: 14, // <-- Set your trial length here
       payment_behavior: "default_incomplete",
       payment_settings: {
         save_default_payment_method: "on_subscription",

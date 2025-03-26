@@ -3,10 +3,11 @@ import { useState, useEffect, useCallback } from "react";
 import { createClient } from "../../utils/supabase/client";
 import Link from "next/link";
 import PulseLoader from "react-spinners/PulseLoader";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FaWindows, FaApple } from "react-icons/fa";
 
 function Page() {
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [subscription, setSubscription] = useState(null);
   const [downloadLinks, setDownloadLinks] = useState([]);
@@ -47,7 +48,7 @@ function Page() {
   const handleSignOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    redirect("/");
+    router.push("/");
   };
 
   const formatDate = (date) => {
@@ -100,12 +101,20 @@ function Page() {
             <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start ">
               Dashboard
             </h1>
-            <button
-              onClick={handleSignOut}
-              className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600 hover:bg-blue-700 transition-all duration-300"
-            >
-              Sign Out
-            </button>
+            <div className="flex gap-4 items-center">
+              <button
+                onClick={() => router.push("/editor")}
+                className="text-sm font-bold text-blue-500 hover:text-blue-600 underline  transition-all duration-300"
+              >
+                Web Editor (Experimental)
+              </button>
+              <button
+                onClick={handleSignOut}
+                className="text-sm font-bold text-neutral-300 px-4 py-2 rounded-md cursor-pointer bg-blue-600 hover:bg-blue-700 transition-all duration-300"
+              >
+                Sign Out
+              </button>
+            </div>
           </div>
           {!user || !subscription ? (
             <div className="w-full h-screen bg-neutral-900 flex justify-center items-center">

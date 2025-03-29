@@ -134,7 +134,7 @@ function Page() {
             <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start ">
               Dashboard
             </h1>
-            <div className="flex gap-4 items-center hidden md:inline">
+            <div className="md:flex gap-4 items-center hidden">
               <button
                 onClick={() => router.push("/editor")}
                 className="text-sm font-bold text-blue-500 hover:text-blue-600 underline  transition-all duration-300"

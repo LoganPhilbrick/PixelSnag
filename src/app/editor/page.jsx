@@ -9,7 +9,6 @@ export default function Page() {
   const [ctx, setCtx] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [screenshotUrl, setScreenshotUrl] = useState(utils.placeholder);
-  const [isAiDescriptionOpen, setIsAiDescriptionOpen] = useState(true);
 
   return (
     <div
@@ -22,15 +21,13 @@ export default function Page() {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
         setScreenshotUrl={setScreenshotUrl}
-        isAiDescriptionOpen={isAiDescriptionOpen}
-        setIsAiDescriptionOpen={setIsAiDescriptionOpen}
       />
       <Sidebar
         ctx={ctx}
         isSidebarOpen={isSidebarOpen}
         screenshotUrl={screenshotUrl}
         setScreenshotUrl={setScreenshotUrl}
-        setIsAiDescriptionOpen={setIsAiDescriptionOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
       />
     </div>
   );

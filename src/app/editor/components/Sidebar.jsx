@@ -186,7 +186,13 @@ const BackgroundImageCell = ({ url, onClick }) => {
   );
 };
 
-function Sidebar({ ctx, isSidebarOpen, screenshotUrl, setScreenshotUrl }) {
+function Sidebar({
+  ctx,
+  isSidebarOpen,
+  screenshotUrl,
+  setScreenshotUrl,
+  setIsSidebarOpen,
+}) {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState(
     meshGradients.meshGradient1
   );
@@ -368,12 +374,52 @@ function Sidebar({ ctx, isSidebarOpen, screenshotUrl, setScreenshotUrl }) {
     <div
       className={clsx(
         "bg-neutral-900 border-l border-neutral-700 shadow-lg overflow-y-auto custom-scrollbar",
-        "transition-transform duration-300 ease-in-out transition-all",
-        isSidebarOpen ? "translate-x-0 w-96 min-w-96" : "translate-x-full w-0"
+        "transition-transform duration-300 ease-in-out transition-all relative",
+        isSidebarOpen
+          ? "translate-x-0 w-4/5 md:w-96 md:min-w-96"
+          : "translate-x-full w-0"
       )}
     >
       <div className="flex flex-col gap-4 p-4">
-        <SectionHeader title="Select An Image" />
+        <div className="flex gap-2 items-center ">
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="p-2 bg-neutral-900 rounded-full flex items-center justify-center shadow-md hover:bg-neutral-700 transition-colors duration-200 active:scale-95 md:hidden"
+          >
+            {isSidebarOpen ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-4 text-neutral-200"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-4 text-neutral-200"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+            )}
+          </button>
+          <SectionHeader title="Select An Image" />
+        </div>
         <FileSelector setScreenshotUrl={setScreenshotUrl} />
         <SectionHeader title="Sizing" />
         <div className="flex flex-col gap-2 bg-neutral-800 p-4 rounded-md shadow-md">

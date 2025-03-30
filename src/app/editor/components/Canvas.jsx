@@ -13,9 +13,14 @@ function Canvas({ setCtx, isSidebarOpen, setIsSidebarOpen }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const getCurrentTimeStamp = () => {
+      const currentTimeInSeconds = new Date();
+      return currentTimeInSeconds.toISOString();
+    };
+
     // Create a temporary link element
     const link = document.createElement("a");
-    link.download = "canvas-image.png";
+    link.download = `pixelsnag_${getCurrentTimeStamp()}.png`;
     link.href = canvas.toDataURL("image/png");
 
     // Trigger download

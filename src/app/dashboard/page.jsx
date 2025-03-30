@@ -6,6 +6,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import { useRouter } from "next/navigation";
 import { FaWindows, FaApple } from "react-icons/fa";
 import clsx from "clsx";
+import Image from "next/image";
 
 function Page() {
   const router = useRouter();
@@ -130,10 +131,18 @@ function Page() {
     <div className="w-full min-h-screen bg-neutral-900 pb-10">
       <div className="w-full h-full ">
         <div className="container mx-auto pt-10 ">
-          <div className="flex justify-between items-center mx-4 md:mx-0">
-            <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start ">
-              Dashboard
-            </h1>
+          <div className="flex justify-between items-center mx-4 md:mx-0 mb-4">
+            <div className="flex items-center gap-2">
+              <Image
+                src="/logo.svg"
+                alt="logo"
+                width={24}
+                height={24}
+                onClick={() => router.push("/")}
+                className="cursor-pointer"
+              />
+              <h2 className="text-3xl">Dashboard</h2>
+            </div>
             <div className="md:flex gap-4 items-center hidden">
               <button
                 onClick={() => router.push("/editor")}

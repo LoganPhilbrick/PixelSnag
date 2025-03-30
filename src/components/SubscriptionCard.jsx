@@ -7,7 +7,7 @@ function SubscriptionCard({ containerClass, showButton, showBackground }) {
     "Instant capturing and sharing",
     "Extensive editing tools",
     "AI-powered image analysis",
-    "Full feature access across Windows and MacOS",
+    "Full feature access across Windows and MacOS (Apple Silicon)",
     "Priority customer support",
   ];
 

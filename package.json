@@ -20,6 +20,7 @@
     "@vercel/analytics": "^1.5.0",
     "clsx": "^2.1.1",
     "cookies-next": "^5.1.0",
+    "firebase": "^11.5.0",
     "formik": "^2.4.6",
     "next": "^15.2.4",
     "react": "^19.0.0",

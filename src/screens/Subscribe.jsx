@@ -13,6 +13,8 @@ import { formatCurrency } from "../utils/currency";
 import { useRouter } from "next/navigation";
 import RoundButton from "../components/RoundButton";
 import SubscriptionCard from "../components/SubscriptionCard";
+import { logEvent } from "firebase/analytics";
+import { analytics } from "../utils/firebase";
 
 const stripePromise = loadStripe(
   // eslint-disable-next-line no-undef
@@ -37,6 +39,7 @@ const CheckoutForm = ({ subscription }) => {
           return_url: `${window.location.origin}/dashboard`,
         },
       });
+      logEvent(analytics, "user_subscribed");
       if (error) {
         throw new Error(error.message);
       }
@@ -172,6 +175,14 @@ export default function Subscribe() {
             <CheckoutForm subscription={options.subscription} />
           </Elements>
         )}
+        <button
+          onClick={() => {
+            logEvent(analytics, "user_subscribed");
+            console.log("pressed!");
+          }}
+        >
+          Press Me!
+        </button>
       </div>
     </div>
   );

@@ -6,7 +6,8 @@ import PulseLoader from "react-spinners/PulseLoader";
 import { useRouter } from "next/navigation";
 import { FaWindows, FaApple } from "react-icons/fa";
 import clsx from "clsx";
-import Footer from "../../components/Footer";
+import Image from "next/image";
+import WindowsWarningModal from "../../components/WindowsWarningModal";
 
 function Page() {
   const router = useRouter();
@@ -18,6 +19,7 @@ function Page() {
   const [isDownloadsOpen, setIsDownloadsOpen] = useState(false);
   const [hasAccessCode, setHasAccessCode] = useState(false);
   const [isSmallNavbarOpen, setIsSmallNavbarOpen] = useState(false);
+  const [isWindowsWarningModalOpen, setIsWindowsWarningModalOpen] = useState(false);
 
   const fetchAccessCodeStatus = useCallback(async () => {
     const response = await fetch("/api/get-access-code-status");
@@ -130,8 +132,11 @@ function Page() {
       <div className="w-full min-h-screen bg-neutral-900 pb-10">
         <div className="w-full h-full ">
           <div className="container mx-auto pt-10 ">
-            <div className="flex justify-between items-center mx-4 md:mx-0">
-              <h1 className="text-4xl font-bold text-neutral-300 mb-4 self-start ">Dashboard</h1>
+            <div className="flex justify-between items-center mx-4 md:mx-0 mb-4">
+              <div className="flex items-center gap-2">
+                <Image src="/logo.svg" alt="logo" width={24} height={24} onClick={() => router.push("/")} className="cursor-pointer" />
+                <h2 className="text-3xl">Dashboard</h2>
+              </div>
               <div className="md:flex gap-4 items-center hidden">
                 <button onClick={() => router.push("/editor")} className="text-sm font-bold text-blue-500 hover:text-blue-600 underline  transition-all duration-300">
                   Web Editor (Experimental)
@@ -298,13 +303,23 @@ function Page() {
                         <div className="w-full" key={system}>
                           <h3 className="text-lg font-bold text-neutral-300 mb-4 border-b border-neutral-700 pb-2">{system}</h3>
                           <div className="flex flex-col">
-                            <a
-                              href={files[files.findIndex((e) => e.includes(getMostRecentVersion(files)))]}
-                              className="bg-blue-600 transition-all hover:bg-blue-700 mr-auto p-4 rounded-md flex items-center gap-2"
-                            >
-                              {system === "Windows" ? <FaWindows size={22} /> : <FaApple size={22} />} Download for {system}
-                            </a>
+                            {system === "Windows" ? (
+                              <button onClick={() => setIsWindowsWarningModalOpen(true)} className="bg-blue-600 transition-all hover:bg-blue-700 mr-auto p-4 rounded-md flex items-center gap-2">
+                                <FaWindows size={22} /> Download For Windows
+                              </button>
+                            ) : (
+                              <a
+                                href={files[files.findIndex((e) => e.includes(getMostRecentVersion(files)))]}
+                                className="bg-blue-600 transition-all hover:bg-blue-700 mr-auto p-4 rounded-md flex items-center gap-2"
+                              >
+                                <FaApple size={22} />
+                                Download for {system}
+                              </a>
+                            )}
                           </div>
+                          {isWindowsWarningModalOpen && (
+                            <WindowsWarningModal onAccept={files[files.findIndex((e) => e.includes(getMostRecentVersion(files)))]} onClose={() => setIsWindowsWarningModalOpen(false)} />
+                          )}
                         </div>
                       ))}
                     </div>
@@ -316,7 +331,7 @@ function Page() {
             </div>
           </div>
         </div>
-      </div>
+      </div>{" "}
       <div className="w-full shadow-[0_-12px_10px_rgba(0,0,0,.25)]">
         <Footer />
       </div>

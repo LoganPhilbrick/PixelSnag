@@ -331,9 +331,6 @@ function Page() {
             </div>
           </div>
         </div>
-      </div>{" "}
-      <div className="w-full shadow-[0_-12px_10px_rgba(0,0,0,.25)]">
-        <Footer />
       </div>
     </>
   );

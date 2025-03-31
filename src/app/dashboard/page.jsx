@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { FaWindows, FaApple } from "react-icons/fa";
 import clsx from "clsx";
 import Image from "next/image";
+import WindowsWarningModal from "../../components/WindowsWarningModal";
 
 function Page() {
   const router = useRouter();
@@ -18,6 +19,8 @@ function Page() {
   const [isDownloadsOpen, setIsDownloadsOpen] = useState(false);
   const [hasAccessCode, setHasAccessCode] = useState(false);
   const [isSmallNavbarOpen, setIsSmallNavbarOpen] = useState(false);
+  const [isWindowsWarningModalOpen, setIsWindowsWarningModalOpen] =
+    useState(false);
 
   const fetchAccessCodeStatus = useCallback(async () => {
     const response = await fetch("/api/get-access-code-status");
@@ -421,24 +424,41 @@ function Page() {
                           {system}
                         </h3>
                         <div className="flex flex-col">
-                          <a
-                            href={
+                          {system === "Windows" ? (
+                            <button
+                              onClick={() => setIsWindowsWarningModalOpen(true)}
+                              className="bg-blue-600 transition-all hover:bg-blue-700 mr-auto p-4 rounded-md flex items-center gap-2"
+                            >
+                              <FaWindows size={22} /> Download For Windows
+                            </button>
+                          ) : (
+                            <a
+                              href={
+                                files[
+                                  files.findIndex((e) =>
+                                    e.includes(getMostRecentVersion(files))
+                                  )
+                                ]
+                              }
+                              className="bg-blue-600 transition-all hover:bg-blue-700 mr-auto p-4 rounded-md flex items-center gap-2"
+                            >
+                              <FaApple size={22} />
+                              Download for {system}
+                            </a>
+                          )}
+                        </div>
+                        {isWindowsWarningModalOpen && (
+                          <WindowsWarningModal
+                            onAccept={
                               files[
                                 files.findIndex((e) =>
                                   e.includes(getMostRecentVersion(files))
                                 )
                               ]
                             }
-                            className="bg-blue-600 transition-all hover:bg-blue-700 mr-auto p-4 rounded-md flex items-center gap-2"
-                          >
-                            {system === "Windows" ? (
-                              <FaWindows size={22} />
-                            ) : (
-                              <FaApple size={22} />
-                            )}{" "}
-                            Download for {system}
-                          </a>
-                        </div>
+                            onClose={() => setIsWindowsWarningModalOpen(false)}
+                          />
+                        )}
                       </div>
                     ))}
                   </div>

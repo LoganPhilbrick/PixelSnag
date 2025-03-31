@@ -5,6 +5,8 @@ import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { signup } from "./actions";
 import Link from "next/link";
+import { logEvent } from "firebase/analytics";
+import { analytics } from "../../utils/firebase";
 
 const signupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -49,6 +51,7 @@ function Page() {
                 if (values.accessCode) {
                   router.push("/dashboard");
                 } else {
+                  logEvent(analytics, "sign_up");
                   router.push("/address" + "?redirectTo=/subscribe");
                 }
               } catch (error) {
